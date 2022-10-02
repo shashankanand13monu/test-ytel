@@ -10,6 +10,7 @@ import 'domain/user_models.dart';
 import 'providers/user_provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

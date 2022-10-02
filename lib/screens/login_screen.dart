@@ -34,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     AuthProvider auth = Provider.of<AuthProvider>(context);
+    // final authProvider = Provider.of<AuthProvider>(context);
 
     void login(String email, String password, BuildContext context) async {
 
@@ -112,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
               refreshToken= data['refreshToken'];
               tokenType= data['tokenType'];
               
-
+              Provider.of<AuthProvider>(context,listen: false).signIn(email, password);
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage(
               apiToken: apiToken,
             email: email,
@@ -189,6 +190,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () {
                               print(_emailController.text);
                               print(_passwordController.text);
+                              
+                              // auth.login(_emailController.text,
+                              //     _passwordController.text);
+
+
                               login(_emailController.text,
                                   _passwordController.text, context);
                             },

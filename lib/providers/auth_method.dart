@@ -29,6 +29,14 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  String eml = "";
+  String pwd = "";
+  void signIn(String em, String pass) {
+    eml = em;
+    pwd = pass;
+    notifyListeners();
+  }
+
   Status get _registeredStatus => _registeredStatus;
 
   set registeredStatus(Status value) {
@@ -88,14 +96,18 @@ class AuthProvider extends ChangeNotifier {
   Future<Map<String, dynamic>> login(String email, String password) async {
     var result;
     final Map<String, dynamic> loginData = {
-      'email': email,
+      'captcha': '123456',
+      'grantType': "resource_owner_credentials",
       'password': password,
+      'username': email,
+      'refreshToken': "120",
     };
 
     _loggedInStatus = Status.Authenticating;
     notifyListeners();
 
-    Response response = await post(Uri.parse(AppUrl.login),
+    Response response = await post(
+        Uri.parse("https://api.ytel.com/auth/v2/token/"),
         body: jsonEncode(loginData),
         headers: {
           'Content-Type': 'application/json',
@@ -109,18 +121,15 @@ class AuthProvider extends ChangeNotifier {
 
       User authUser = User.fromJson(responseData);
       UserPreferences().saveUser(authUser);
-      _loggedInStatus= Status.LoggedIn;
+      _loggedInStatus = Status.LoggedIn;
       notifyListeners();
       result = {
         'status': true,
         'message': 'Login Successful',
         'data': authUser
       };
-
-    }
-    else
-    {
-      _loggedInStatus= Status.NotLoggedIn;
+    } else {
+      _loggedInStatus = Status.NotLoggedIn;
       notifyListeners();
       result = {
         'status': false,

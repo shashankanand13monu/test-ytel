@@ -11,7 +11,8 @@ class UserPreferences{
     prefs.setString('phone', user.phone!);
     prefs.setString('type', user.type!);
     prefs.setString('token', user.token!);
-    // prefs.setString('refreshToken', user.refreshToken);
+    prefs.setString('refreshToken', user.refreshToken!);
+    
     return prefs.commit();
   }
 
